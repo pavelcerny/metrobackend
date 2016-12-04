@@ -1,11 +1,12 @@
 from django.http import HttpResponse
-from voting.models import UniquePerson, SimpleDayRecord
+from voting.models import Person, Record
 from django.utils import timezone
+from django.views import generic
 
 
 def index(request):
-    persons = UniquePerson.objects.all()
-    days = SimpleDayRecord.objects.all()
+    persons = Person.objects.all()
+    days = Record.objects.all()
     return HttpResponse("Hello, world. Can we make metro easier? <br>"
                         "Allready made " +
                         str(len(days)) +
@@ -17,11 +18,11 @@ def vote(request):
     now = timezone.now()
     client_ip = request.META['REMOTE_ADDR']
     try:
-        unique_person = UniquePerson.objects.get(ip=client_ip)
+        p = Person.objects.get(ip=client_ip)
     except:
-        unique_person = UniquePerson(ip=client_ip)
-        unique_person.save()
+        p = Person(ip=client_ip)
+        p.save()
 
-    new_day = SimpleDayRecord(person = unique_person, record_date = now)
+    new_day = Record(person = p, record_date = now)
     new_day.save()
     return HttpResponse("+1 simple day added")
