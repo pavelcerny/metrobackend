@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from voting.models import Person, Record
 from django.utils import timezone
 from django.template import loader
+from django.shortcuts import redirect
 
 
 def index(request):
@@ -9,6 +10,18 @@ def index(request):
     days = Record.objects.all()
     template = loader.get_template('voting/homepage.html')
     context = {
+        'n_persons': len(persons),
+        'n_days': len(days)
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def after_voting(request):
+    persons = Person.objects.all()
+    days = Record.objects.all()
+    template = loader.get_template('voting/homepage.html')
+    context = {
+        'voted': True,
         'n_persons': len(persons),
         'n_days': len(days)
     }
@@ -26,4 +39,13 @@ def vote(request):
 
     new_day = Record(person = p, record_date = now)
     new_day.save()
-    return HttpResponse("+1 simple day added")
+
+    persons = Person.objects.all()
+    days = Record.objects.all()
+    context = {
+        'n_persons': len(persons),
+        'n_days': len(days)
+    }
+
+    #return HttpResponse("+1 simple day added")
+    return redirect('/voted')

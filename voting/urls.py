@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^vote$', views.vote, name='vote'),
+    url(r'^voted$', views.after_voting, name='after_voting'),
 
 ]

@@ -5,7 +5,10 @@
     <title>Metro Easier</title>
 </head>
 <body>
-<p>Hello, world. Can we make metro easier?</p>
+{% if voted  %}
+    <p>You just added +1 easy day</p>
+{% endif %}
+<p>Can we make the metro easier?</p>
 {% if n_persons and n_days  %}
     <p>We already made {{n_days}} days easier to {{n_persons}} unique metro travellers</p>
 {% else %}
