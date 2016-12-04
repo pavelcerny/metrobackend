@@ -1,17 +1,18 @@
 from django.http import HttpResponse
 from voting.models import Person, Record
 from django.utils import timezone
-from django.views import generic
+from django.template import loader
 
 
 def index(request):
     persons = Person.objects.all()
     days = Record.objects.all()
-    return HttpResponse("Hello, world. Can we make metro easier? <br>"
-                        "Allready made " +
-                        str(len(days)) +
-                        " days simplier to " +
-                        str(len(persons)) + " unique persons")
+    template = loader.get_template('voting/homepage.html')
+    context = {
+        'n_persons': len(persons),
+        'n_days': len(days)
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def vote(request):
