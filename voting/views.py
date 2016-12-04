@@ -39,13 +39,4 @@ def vote(request):
 
     new_day = Record(person = p, record_date = now)
     new_day.save()
-
-    persons = Person.objects.all()
-    days = Record.objects.all()
-    context = {
-        'n_persons': len(persons),
-        'n_days': len(days)
-    }
-
-    #return HttpResponse("+1 simple day added")
     return redirect('/voted')
